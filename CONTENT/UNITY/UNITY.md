@@ -7,7 +7,7 @@
 Quaternion is the rotation of an object in x, y, z and w position. Used by default in Unity.<br>
 `Quaternion.identity` means no rotation.<br>
 `Quaternion.Euler(x, y, z)` rotation in Euler.<br>
-[`Quaternion.LookRotation`](#quaternion.lookrotation-implementation-example) searches for rotation to a certain point in space.<br>
+[`Quaternion.LookRotation`](#quaternionlookrotation-implementation-example) searches for rotation to a certain point in space.<br>
 ## Post Processing stack
 ### How to enable
 Fisrt, import a Post Processing Stack from a `Package Manager`. Put a `Post Process Layer` on your `Camera`. In `Inspector`, create a new Layer explicitly for Post Processing. Assign this layer in a `Post Process Layer` on `Camera`. Next step is to create a Volume. Create an empty object, add to it a component called `Post Process Volume`.<br>
