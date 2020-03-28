@@ -2,13 +2,13 @@
 [Go Back](../../README.md)
 ## Unity Basics
 ### Debug Commands
-##### `Debug.DrawRay(position, direction, color)` draws a line in the Scene View.<br>
+`Debug.DrawRay(position, direction, color)` draws a line in the Scene View.<br>
 ### Quaternion
 Quaternion is the rotation of an object in x, y, z and w position. Used by default in Unity.<br>
-##### `Quaternion.identity` means no rotation.<br>
-##### `Quaternion.Euler(x, y, z)` rotation in Euler.<br>
-##### [`Quaternion.LookRotation`](#quaternionlookrotation-implementation-example) searches for rotation to a certain point in space.<br>
-##### `Quaternion.Slerp`(#quaternionlookrotation-implementation-example) spherical interpolation. In combination with `Quaternion.LookRotation()` can give an effect of smooth look-to-object movement rather then instant snap.
+`Quaternion.identity` means no rotation.<br>
+`Quaternion.Euler(x, y, z)` rotation in Euler.<br>
+[`Quaternion.LookRotation`](#quaternionlookrotation-implementation-example) searches for rotation to a certain point in space.<br>
+[`Quaternion.Slerp`](#quaternionlookrotation-implementation-example) spherical interpolation. In combination with `Quaternion.LookRotation()` can give an effect of smooth look-to-object movement rather then instant snap.
 ## Post Processing stack
 ### How to enable
 Fisrt, import a Post Processing Stack from a `Package Manager`. Put a `Post Process Layer` on your `Camera`. In `Inspector`, create a new Layer explicitly for Post Processing. Assign this layer in a `Post Process Layer` on `Camera`. Next step is to create a Volume. Create an empty object, add to it a component called `Post Process Volume`.<br>
@@ -67,5 +67,3 @@ public class Aim : MonoBehavior
     }
 }
 ```
-[Debug.DrawRay() reference](#debugdrawrayposition-direction-color-draws-a-line-in-the-scene-viewbr)<br>
-[Quaternion.Slerp() reference](#quaternionslerp-spherical-interpolation-in-combination-with-quaternionlookrotation-can-give-an-effect-of-smooth-look-to-object-movement-rather-then-instant-snap)
