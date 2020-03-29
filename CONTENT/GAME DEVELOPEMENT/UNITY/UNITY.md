@@ -49,7 +49,7 @@ public class Message : MonoBehavior
 - Iterator through all monsters in a "blast" zone and deal damage.
 - Shatter an object (looping through each piece and adding physics).
 - When you add an item to a player inventory, you need to loop through the database to see if that item exists before adding it.
-- You want to turn all game objects in view RED (llop through each object and affect them).
+- You want to turn all game objects in view RED (loop through each object and affect them).
 ### Usage of Custom Classes
 Custom Classes are classes that don't derive from MonoBehavior class. Custom Classes are useful when creating something that has identical methods/variables/etc. Like Item system, Power-up system. So first, you design what an Item **IS**, then you create items via the constructor.
 ## Code Examples
