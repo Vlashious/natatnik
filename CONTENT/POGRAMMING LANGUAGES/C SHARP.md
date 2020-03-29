@@ -92,6 +92,29 @@ public class Player : MonoBehavior
     }
 }
 ```
+## Properties
+Can be treated as "smart variables". Not only can you retrieve information from them, but you can also run functionality through them.
+```c#
+private bool isGameOver = false;
+
+public bool IsGameOver
+{
+    get
+    {
+        return isGameOver;
+    }
+    set
+    {
+        if(value == true)
+        {
+            // Additional functionality through the variable.
+            Debug.Log("Oh no the game is over!");
+        }
+        // value is a hidden default member which represents the data being passed to the property
+        isGameOver = value;
+    }
+}
+```
 ## Reference and Value types
 Reference types are stored in heap, when Value types are stored in stack. It means that the reference types actually store the adress **location** where the information is located, when value types store the data itself.<br>
 When changing a reference type inside a method, everything will be changed normally outside of the method too, because the method has changed the data in the certain location in memory.<br>
