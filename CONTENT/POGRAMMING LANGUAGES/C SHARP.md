@@ -1,24 +1,70 @@
 # C#
 [Go back](../../README.md)
 ## Static Types
-Static members created for the whole lifetime of your program, thus they're never going to be destructed. It's convenient to use them, so don't be shy **put some** **_MORE_**. But there are some limitations.
+Static members created for the whole lifetime of your program, thus they're never going to be destructed. It's convenient to use them, so don't be shy **put some** **_MORE_**. But there are some limitations.<br>
+If a class is static, it can **not** inherit nor have **non-static** methods within it.
 ### Shared and Instance members
 Shared members, like static members, are shared among all the instances of the class, but can be accessed only through the class. Instance members live within some _instance_ of a class and destroyed when the _instance_ is destroyed, while Shared members live within the _class_ and are not destroyed when some instance is destroyed.
 ```c#
 public class Item
 {
     public int name; // Instance member.
-    public int ID; // Instance member.
+    public int ID;   // Instance member.
 
     public static int itemCount = 0; // Shared member.
 }
 
 Item bread = new Item(); // bread.itemCount will cause a compile error.
-Item.itemCount++; // itemCount = 1;
-bread = null; // Instance is deleted, but Item.itemCount still can be accessed;
-              // Item.itemCount = 1;
+Item.itemCount++;        // itemCount = 1;
+
+bread = null;            // Instance is deleted, but Item.itemCount still can be accessed;
+                         // Item.itemCount = 1;
+
 Item sword = new Item(); // sword.itemCount will cause a compile error.
-Item.itemCount++; // itemCount = 2;
+Item.itemCount++;        // itemCount = 2;
+```
+### Utility Helper Classes
+Utility classes are basically helper methods that you have created, so that you can ideally streamline your developement process. Imagine you are creating objects for several of your applications: insted of manually copying and pasting your code into each application, you could have one utility helper class that has that method.
+```c#
+public static class UtilityHelper
+{
+    public static void CreateObject()
+    {
+        GameObject.CreatePrimitive(PrimitiveType.Cube);
+    }
+
+    public static void SetPosToZero(GameObject obj)
+    {
+        obj.transform.postion = Vector3.zero;
+    }
+
+    public static void ChangeColor(GameObject obj)
+    {
+        Color color = new Color(Random.value, Random.value, Random.value);
+        obj.GetComponent<Renderer>().material.color = color;
+    }
+}
+
+public class Player : MonoBehavior
+{
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            UtilityHelper.CreateObject();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            UtilityHelper.SetPosToZero(this);
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            UtilityHelper.ChangeColor(this);
+        }
+    }
+}
 ```
 ## Reference and Value types
 Reference types are stored in heap, when Value types are stored in stack. It means that the reference types actually store the adress **location** where the information is located, when value types store the data itself.<br>
