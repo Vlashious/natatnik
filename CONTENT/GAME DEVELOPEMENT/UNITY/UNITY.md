@@ -1,8 +1,12 @@
 # Unity Engine
-[Go Back](../../README.md)
+[Go Back](../../../README.md)
 ## Unity Basics
 ### Debug Commands
 `Debug.DrawRay(position, direction, color)` draws a line in the Scene View.<br>
+### Mesh Renderer
+Controls the render of an object, for example, it's color.<br>
+`object.GetComponent<Renderer>()` returns the Mesh Renderer of the object.<br>
+`object.GetComponent<Renderer>().material` grants access to the material of the object. `material.color` lets get and set the color of the material.
 ### Quaternion
 Quaternion is the rotation of an object in x, y, z and w position. Used by default in Unity.<br>
 `Quaternion.identity` means no rotation.<br>
@@ -59,10 +63,16 @@ public class Aim : MonoBehavior
 
     void Update()
     {
+        // Find the direction to the aim.
         Vector3 directionToFace = aimObj.transform.position - transform.position;
+
+        // Draw ray from the object to the aim.
         Debug.DrawRay(transform.position, directionToFace, Color.green);
+
+        // Get rotation.
         Quaternion endPos = Quaternion.LookRotation(directionToFace);
 
+        // Smoothly slerp between the current rotation and the rotation needed.
         transform.rotation = Quaternion.Slerp(transform.position, endPos, Time.deltaTime);
     }
 }
