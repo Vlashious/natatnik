@@ -3,8 +3,8 @@
 ## Static Types
 Static members created for the whole lifetime of your program, thus they're never going to be destructed. It's convenient to use them, so don't be shy **put some** **_MORE_**. But there are some limitations.<br>
 If a class is static, it can **not** inherit nor have **non-static** methods within it.
-### Shared and Instance members
-Shared members, like static members, are shared among all the instances of the class, but can be accessed only through the class. Instance members live within some _instance_ of a class and destroyed when the _instance_ is destroyed, while Shared members live within the _class_ and are not destroyed when some instance is destroyed.
+### Static and Instance members
+Shared members, like static members, are shared among all the instances of the class, but can be accessed only through the class. Instance members live within some _instance_ of a class and destroyed when the _instance_ is destroyed, while Static members live within the _class_ and are not destroyed when some instance is destroyed.
 ```c#
 public class Item
 {
@@ -22,6 +22,32 @@ bread = null;            // Instance is deleted, but Item.itemCount still can be
 
 Item sword = new Item(); // sword.itemCount will cause a compile error.
 Item.itemCount++;        // itemCount = 2;
+```
+### Static member initialization
+```c#
+public class Employee
+{
+    public Employee()
+    {
+        Console.WriteLine("Instance members"); // Called everytime the instance is created.
+    }
+
+    static Employee()
+    {
+        Console.WriteLine("Static members");   // Is called once.
+    }
+}
+
+var e1 = new Employee();
+var e2 = new Employee();
+var e3 = new Employee();
+```
+Output:
+```
+Static members
+Instance members
+Instance members
+Instance members
 ```
 ### Utility Helper Classes
 Utility classes are basically helper methods that you have created, so that you can ideally streamline your developement process. Imagine you are creating objects for several of your applications: insted of manually copying and pasting your code into each application, you could have one utility helper class that has that method.
