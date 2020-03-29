@@ -93,7 +93,8 @@ public class Player : MonoBehavior
 }
 ```
 ## Properties
-Can be treated as "smart variables". Not only can you retrieve information from them, but you can also run functionality through them.
+### Simple Properties
+Can be treated as "smart variables". Not only can you retrieve information from them, but you can also run functionality through them. To create them, you need a variable they're working with manually.
 ```c#
 private bool isGameOver = false;
 
@@ -114,6 +115,13 @@ public bool IsGameOver
         isGameOver = value;
     }
 }
+```
+### Auto Properties
+Is a cleaner way to do a property, when additional functionality is not needed.
+```c#
+public bool IsGameOver { get; set; } // Every script can access and set this property.
+public bool IsGameOver { get; private set; } // Only the class itself can set this property, external scripts can only read.
+public bool IsGameOver { get; protected set; } // ...
 ```
 ## Reference and Value types
 Reference types are stored in heap, when Value types are stored in stack. It means that the reference types actually store the adress **location** where the information is located, when value types store the data itself.<br>
