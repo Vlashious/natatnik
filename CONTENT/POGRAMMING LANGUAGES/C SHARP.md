@@ -132,7 +132,7 @@ namespace MySpace
 }
 ```
 ## Enums
-Allow you to create readable selections that are based of integer values and you can use them in the English format.
+Allow you to create readable selections that are based of integer values and you can use them in the English format. You can cast it to the integer type by using `(int)`.
 ```c#
 // Code without enums.
 public class SelectDifficulty

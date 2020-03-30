@@ -225,6 +225,46 @@ public class Player : MonoBehavior
     }
 }
 ```
+### Enemy AI backbone with Enums
+```c#
+public class EnemyAI : MonoBehavior
+{
+    public enum EnemyState
+    {
+        Patroling,
+        Attacking,
+        Chasing,
+        Death
+    }
+
+    public EnemyState currentState;
+
+    private void Start()
+    {
+        currentState = EnemyState.Patroling;
+    }
+
+    private void Update()
+    {
+        switch (currentState)
+        {
+            case EnemyState.Patroling:
+                Debug.Log("Patroling.");
+                break;
+            case EnemyState.Attacking:
+                Debug.Log("Attacking.");
+                break;
+            case EnemyState.Chasing:
+                Debug.Log("Chasing.");
+                break;
+            case EnemyState.Death:
+                Debug.Log("Death.");
+                break;
+        }
+    }
+
+}
+```
 ## Post Processing stack
 ### How to enable
 Fisrt, import a Post Processing Stack from a `Package Manager`. Put a `Post Process Layer` on your `Camera`. In `Inspector`, create a new Layer explicitly for Post Processing. Assign this layer in a `Post Process Layer` on `Camera`. Next step is to create a Volume. Create an empty object, add to it a component called `Post Process Volume`.<br>
