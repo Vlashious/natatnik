@@ -125,6 +125,65 @@ public bool IsGameOver { get; protected set; } // ...
 ```
 ## Namespaces
 Allow you to develope code without interfering with the code already exists. It's always a good practice to use a namespace.
+```c#
+namespace MySpace
+{
+
+}
+```
+## Enums
+Allow you to create readable selections that are based of integer values and you can use them in the English format.
+```c#
+// Code without enums.
+public class SelectDifficulty
+{
+    public int easy;
+    public int normal;
+    public int hard;
+    public int currentSelectedLever;
+}
+
+// Code with enums.
+public class SelectDifficulty
+{
+    public enum LevelSelector
+    {
+        Easy, // 0
+        Normal, // 1
+        Hard // 2
+    }
+
+    public LevelSelector currentDifficulty;
+
+    public CheckDifficulty()
+    {
+        switch(currentDifficulty)
+        {
+            case LevelSelector.Easy:
+                // Some code.
+                break;
+            case LevelSelector.Normal:
+                // Some code.
+                break;
+            case LevelSelector.Hard:
+                // Some code.
+                break;
+        }
+    }
+}
+
+public class SelectDifficulty
+{
+    public enum LevelSelector
+    {
+        Easy = 0, // 0
+        Normal = 43, // 43
+        Hard = 33 // 33
+        ...       // 34
+        // You can assign values in enums manually.
+    }
+}
+```
 ## Reference and Value types
 Reference types are stored in heap, when Value types are stored in stack. It means that the reference types actually store the adress **location** where the information is located, when value types store the data itself.<br>
 When changing a reference type inside a method, everything will be changed normally outside of the method too, because the method has changed the data in the certain location in memory.<br>
