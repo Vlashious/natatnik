@@ -123,6 +123,8 @@ public bool IsGameOver { get; set; } // Every script can access and set this pro
 public bool IsGameOver { get; private set; } // Only the class itself can set this property, external scripts can only read.
 public bool IsGameOver { get; protected set; } // ...
 ```
+## Namespaces
+Allow you to develope code without interfering with the code already exists. It's always a good practice to use a namespace.
 ## Reference and Value types
 Reference types are stored in heap, when Value types are stored in stack. It means that the reference types actually store the adress **location** where the information is located, when value types store the data itself.<br>
 When changing a reference type inside a method, everything will be changed normally outside of the method too, because the method has changed the data in the certain location in memory.<br>

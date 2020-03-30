@@ -161,6 +161,70 @@ public class Aim : MonoBehavior
         }
     }
 ```
+### Inventory Item DB System
+```c#
+public class Item
+{
+    public string name;
+    public string description;
+    public string ID;
+}
+
+public class ItemDB : MonoBehavior
+{
+    public List<Item> itemDatabase = new List<Item>();
+
+    public void AddItem(int ID, Player player)
+    {
+        foreach (var item in itemDatabase)
+        {
+            if (item.ID == ID)
+            {
+                Debug.Log("We have a match!");
+                player.inventory[0] = item;
+                return;
+            }
+        }
+
+        Debug.Log("Item was not found :(");
+    }
+
+    public void RemoveItem(int ID, Player player)
+    {
+        foreach (var item in itemDatabase)
+        {
+            if (item.ID = ID)
+            {
+                player.inventory[0] = null;
+            }
+        }
+    }
+}
+
+public class Player : MonoBehavior
+{
+    public Item[] inventory = new Item[10];
+
+    private ItemDB _itemDB;
+
+    private void Start()
+    {
+        _itemDB = GameObject.Find("ItemDB").GetComponent<ItemDB>();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            _itemDB.AddItem(0, this);
+        }
+        else if (Input.GetKeyDown(KeyCode.R))
+        {
+            _itemDB.RemoveItem(0, this);
+        }
+    }
+}
+```
 ## Post Processing stack
 ### How to enable
 Fisrt, import a Post Processing Stack from a `Package Manager`. Put a `Post Process Layer` on your `Camera`. In `Inspector`, create a new Layer explicitly for Post Processing. Assign this layer in a `Post Process Layer` on `Camera`. Next step is to create a Volume. Create an empty object, add to it a component called `Post Process Volume`.<br>
