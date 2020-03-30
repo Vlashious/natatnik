@@ -184,6 +184,39 @@ public class SelectDifficulty
     }
 }
 ```
+## Dictionary
+Allows quickly retrieve information. Rather then looping through a list, you can retrieve information by its key instantly. Keys must be unique and must exist.<br>
+`dictionary.ContainsKey(int)` checks if certain key is in the dictionary.
+```c#
+public Dictionary<int, Item> itemDictionary = new Dictionary<int, Item>();
+
+private void Start()
+{
+    itemDictionary.Add(0, new Item());
+}
+```
+### When to use
+When working with large lists, like some implementation of shop.
+### Looping through a dictionary
+```c#
+// Looping through each PAIR in the dictionary.
+foreach (var item in itemDictionary)
+{
+    // ...
+}
+
+// Looping through the KEYS only.
+foreach (var key in itemDictionary.Keys)
+{
+    // ...
+}
+
+// Looping through the VALUES only.
+foreach (var item in itemDictionary.Values)
+{
+    // ...
+}
+```
 ## Reference and Value types
 Reference types are stored in heap, when Value types are stored in stack. It means that the reference types actually store the adress **location** where the information is located, when value types store the data itself.<br>
 When changing a reference type inside a method, everything will be changed normally outside of the method too, because the method has changed the data in the certain location in memory.<br>
