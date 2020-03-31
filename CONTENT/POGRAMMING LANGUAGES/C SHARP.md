@@ -217,6 +217,53 @@ foreach (var item in itemDictionary.Values)
     // ...
 }
 ```
+## Delegates
+A variable, which holds a method or several methods.<br>
+`public delegate void ChangeColor(Color newColor)` delegate signature.<br>
+`public ChangeColor onColorChange` creating a variable.<br>
+```c#
+public delegate void ChangeColor(Color newColor);
+public ChangeColor onColorChange;
+
+public delegate void OnComplete();
+public OnComplete onComplete;
+
+private void Start()
+{
+    onColorChange = UpdateColor;
+    onColorChange(Color.green);
+    
+    onComplete += Task1;
+    onComplete += Task2;
+    onComplete += Task3;
+    
+    onComplete -= Task3;
+    if(onComplete)
+    {
+        onComplete();
+    }
+}
+
+public void UpdateColor(Color newColor)
+{
+    Debug.Log("Changing color!");
+}
+
+private void Task1()
+{
+    Debug.Log("Task 1 finished!");
+}
+
+private void Task2()
+{
+    Debug.Log("Task 2 finished!");
+}
+
+private void Task3()
+{
+    Debug.Log("Task 3 finished!");
+}
+```
 ## Reference and Value types
 Reference types are stored in heap, when Value types are stored in stack. It means that the reference types actually store the adress **location** where the information is located, when value types store the data itself.<br>
 When changing a reference type inside a method, everything will be changed normally outside of the method too, because the method has changed the data in the certain location in memory.<br>
