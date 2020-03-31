@@ -305,6 +305,17 @@ public class Cube : MonoBehavior
 ## Actions
 Actions are safe-typy combined delegates and events.<br>
 `public Action<T> action` signature of an action.
+## Return-type Delegates
+Non-void delegates.<br>
+`public Func<T, IResult> delegate;` T is on the input, and IResult is the output.
+## Lambda Expression
+```c#
+public Func<int, string> CharacterLength;
+
+CharacterLength = (name) => name.Length; // => stands for GOTO
+
+int count = CharacterLength("Joh"); // count = 3
+```
 ## Reference and Value types
 Reference types are stored in heap, when Value types are stored in stack. It means that the reference types actually store the adress **location** where the information is located, when value types store the data itself.<br>
 When changing a reference type inside a method, everything will be changed normally outside of the method too, because the method has changed the data in the certain location in memory.<br>
