@@ -331,3 +331,4 @@ Method (ref number); // When calling the method ref keyword is used too.
 ```
 ## Tips
 - It's always better to use switch statements if there are more than 2 else-if statements.
+- Void return type lambda expressions are used with Action keyword, not Func.
