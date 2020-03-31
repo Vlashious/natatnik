@@ -264,6 +264,44 @@ private void Task3()
     Debug.Log("Task 3 finished!");
 }
 ```
+## Events (Specialized Delegates)
+They allow us to create a type of broadcast systems, that allows other classes and objects to subscribe and desubscribe to our delegates. Isolates functionality between different parts of the program. Makes it possible to create extremely flexible systems. When delegate variables can be invoked in different parts of the program, events allow only subscribing/unsubscribing to the delegate itself.<br>
+!IMPORTANT! somewhere in the code there must be an unsubscribing line, usually when a subscribed object gets destroyed.
+```c#
+public class Main : MonoBehavior
+{
+
+    public delegate void ActionClick();
+    public static event ActionClick onClick;
+
+    public void ButtonClick()
+    {
+        if(onClick)
+        {
+            onClick();
+        }
+    }
+}
+
+public class Cube : MonoBehavior
+{
+
+    private void Start()
+    {
+        Main.onClick += TurnRed;
+    }
+
+    public void TurnRed()
+    {
+        GetComponent<MeshRenderer>().material.color = Color.red;
+    }
+    
+    private void OnDisable()
+    {
+        Main.onClick -= TurnRed;
+    }
+}
+```
 ## Reference and Value types
 Reference types are stored in heap, when Value types are stored in stack. It means that the reference types actually store the adress **location** where the information is located, when value types store the data itself.<br>
 When changing a reference type inside a method, everything will be changed normally outside of the method too, because the method has changed the data in the certain location in memory.<br>
