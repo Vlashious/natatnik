@@ -9,3 +9,5 @@
 - [C#](CONTENT/POGRAMMING%20LANGUAGES/C%20SHARP.md)
 - Java
 - Python
+## Design Patterns
+- [Singleton](CONTENT/DESIGN%20PATTERNS/SINGLETON.md)
