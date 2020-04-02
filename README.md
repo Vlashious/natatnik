@@ -11,3 +11,4 @@
 - Python
 ## Design Patterns
 - [Singleton](CONTENT/DESIGN%20PATTERNS/SINGLETON.md)
+- [Object Pooling](CONTENT/DESIGN%20PATTERNS/OBJECT%20POOLING.md)

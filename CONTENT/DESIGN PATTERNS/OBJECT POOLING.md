@@ -1,0 +1,2 @@
+# Object Pooling
+Is an amazing optimisation pattern, especially for mobile, where instead of creating and destroying your objects, you recycle them. The concept is instantiating a list of objects before start of your program, and then looping through them to see are they being used or not. If not, use this object. When object is no longer being used, instead of deleting it in memory, simply deactivate it.

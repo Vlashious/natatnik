@@ -1,8 +1,7 @@
-# SINGLETON
+# Singleton
 A software engineering concept, where you have global access to a class, and this class only exist in one instance.
 ```c#
-// Example using c#
-
+// Example using c#.
 public class GameManager : MonoBehavior
 {
     private static GameManager _instance;
@@ -50,9 +49,10 @@ public class Player : MonoBehavior
     }
 }
 ```
-# MONO SINGLETON
+# Mono Singleton
 Allows converting of any class into a singleton.
 ```c#
+// Example using c#.
 public abstract class MonoSingleton<T> : MonoBehavior where T : MonoSigleton<T>
 {
     private static T _instance;
