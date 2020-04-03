@@ -1,5 +1,5 @@
 # Game Design
-[Go back](../../../README.md)
+[Go Back](../../../README.md)
 ## Šmatpaviarchovaja tetrada
 ### Fiksavany pavierch
 #### Mechanika

@@ -1,10 +1,11 @@
 # Command Pattern
+[Go Back](../../README.md)<br>
 Is nothing more than a behavioral pattern that lets you record the actions or events of your application. It also allows you the ability to isolate your features into their own classes, for example, instead of having a player class that checks for user input, and then perfoms an action, you would isolate the entire action into its own class, allowing you to keep track of the entire action and control it without any distraction. This will ultimately allow to create a rewind system, or queue system in your application.<br>
 Can be really useful in strategy or tactics games.<br>
 Command Pattern in a nutshell just remembers the actions being performed.<br>
 Prons:
 - Features are isolated and contained withing themselves, they are not relying upon other software work.
-- You can change one action without affecting another.
+- You can change one action without affecting another.<br>
 Cons:
 - Adds a layer of complexity.
 - Additional class files, which is not terrible, but can be seen as a con.

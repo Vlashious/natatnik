@@ -1,4 +1,5 @@
 # Singleton
+[Go Back](../../README.md)<br>
 A software engineering concept, where you have global access to a class, and this class only exist in one instance.
 ```c#
 // Example using c#.
