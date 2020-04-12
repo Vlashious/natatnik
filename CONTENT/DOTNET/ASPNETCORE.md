@@ -40,3 +40,61 @@ To start the app, **IHost** object is required, on which the whole app is basing
 `webBuilder.UseStartup<Startup>()` tells the application `Startup` is the starting class.<br>
 
 Afther the IHostBuilder is created, `Build()` is being invoked to build an actual IHost, and `Run()` is called in the end. After that, application is running and web server starts to listen to all of the HTTP requests.
+
+## Startup Class
+
+Startup is the entering point of the app. This class configures the app, services, which will be used, sets the components for request handling or middleware.
+
+```c#
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+namespace App
+{
+    public class Startup
+    {
+        public void ConfigureServices(IServiceCollection services)
+        {
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            // If the app is under development.
+            if (env.IsDevelopment())
+            {
+                // Show the information about the error.
+                app.UseDeveloperExceptionPage();
+            }
+
+            // Add possibilities of routing.
+            app.UseRouting();
+
+            // Sets the addresses to proccess.
+            app.UseEndpoints(endpoints =>
+            {
+                // Proccessing of the request. context if the object of the request.
+                endpoints.MapGet("/", async context =>
+                {
+                    // Send the response.
+                    await context.Response.WriteAsync("Hello World!");
+                });
+            });
+        }
+    }
+}
+```
+
+### ConfigureServices Method
+
+Registers services used by the app. Receives `IServiceCollection`, which represents all of the services in the app. To add a service, `service.Add[ServiceName]` method should be called.
+
+### Configure Method
+
+Determines how the app is going to handle a request. To set components for handling, methods of `IApplicationBuilder` are used. `IWebHostEnvironment` lets you receive the information about the environment, where the app is starting, and work with it.
