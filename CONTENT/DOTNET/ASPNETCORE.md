@@ -154,3 +154,74 @@ public class Startup
 ```
 
 Everytime there is a request, x value is doubled and sent as a response.
+
+#### Run Method
+
+Proccesses a request, but doesn't send it further. Should be used in the end of the pipeline.
+
+```c#
+public class Startup
+{
+    public void Configure(IApplicationBuilder app)
+    {
+        app.Run(async (context) =>
+        {
+            await context.Response.WriteAsync("Hello World!");
+        });
+    }
+}
+```
+
+#### Use Method
+
+Proccesses a request and sends it further.
+
+```c#
+public class Startup
+{
+    public void Configure(IApplicationBuilder app)
+    {
+        int x = 5;
+        int y = 8;
+        int z = 0;
+        app.Use(async (context, next) =>
+        {
+            z = x * y;
+            await next.Invoke(); // Proccesses request and then invokes the next method. In this case, the next method is Run().
+        });
+
+        app.Run(async (context) =>
+        {
+            await context.Response.WriteAsync($"x * y = {z}");
+        });
+    }
+}
+```
+
+**!IMPORTANT!** Don't invoke the next method after `context.Response.WriteAsync()`. One component should be responsible only for one task, not both. And it can cause HTTP protocol violation.
+
+```c#
+public class Startup
+{
+    public void Configure(IApplicationBuilder app)
+    {
+        int x = 2;
+        app.Use(async (context, next) =>
+        {
+            x = x * 2;      // 2 * 2 = 4
+            await next.Invoke();    // The program goes to the next method and waits for it to finish.
+                                    // Then the program goes back here and does the unfinished stuff.
+            x = x * 2;      // 8 * 2 = 16
+            await context.Response.WriteAsync($"Result: {x}");
+        });
+
+        app.Run(async (context) =>
+        {
+            x = x * 2;  //  4 * 2 = 8
+            await Task.FromResult(0);
+        });
+    }
+}
+```
+
+#### Map Method
