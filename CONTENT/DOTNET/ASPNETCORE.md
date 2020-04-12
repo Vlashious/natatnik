@@ -131,3 +131,26 @@ To create a middleware, `public delegate Task RequestDelegate(HttpContext contex
 - Session - support of sessions.
 - Static Files - support of static files proccessing.
 - WebSockets - support of WebSockets protocol.
+
+### Example of middleware
+
+```c#
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+    }
+
+    public void Configure(IApplicationBuilder app)
+    {
+        int x = 2;
+        app.Run(async (context) =>
+        {
+            x = x * 2;  //  2 * 2 = 4 and so on with every request.
+            await context.Response.WriteAsync($"Result: {x}");
+        });
+    }
+}
+```
+
+Everytime there is a request, x value is doubled and sent as a response.
