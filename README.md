@@ -1,13 +1,23 @@
 # Some QoL things I found
+
 ## Game Developement
+
 - [Game Design](CONTENT/GAME%20DEVELOPEMENT/GAME%20DESIGN/GAME%20DESIGN.md)
 - [Unity](CONTENT/GAME%20DEVELOPEMENT/UNITY/UNITY.md)
+
 ## Programming languages
+
 - C++
 - [C#](CONTENT/POGRAMMING%20LANGUAGES/C%20SHARP.md)
 - Java
 - Python
+
 ## Design Patterns
+
 - [Singleton](CONTENT/DESIGN%20PATTERNS/SINGLETON.md)
 - [Object Pooling](CONTENT/DESIGN%20PATTERNS/OBJECT%20POOLING.md)
 - [Command Pattern](CONTENT/DESIGN%20PATTERNS/COMMAND%20PATTERN.md)
+
+## .NET Platform
+
+- [ASP.NET Core](CONTENT/DOTNET/ASPNETCORE.md)
