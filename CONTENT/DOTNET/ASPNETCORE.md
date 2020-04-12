@@ -98,3 +98,36 @@ Registers services used by the app. Receives `IServiceCollection`, which represe
 ### Configure Method
 
 Determines how the app is going to handle a request. To set components for handling, methods of `IApplicationBuilder` are used. `IWebHostEnvironment` lets you receive the information about the environment, where the app is starting, and work with it.
+
+## Request Handling Pipeline
+
+Proccessing of reuqests are like pipeline: the first component of the pipeline receives the request. After proccessing, it sends the request further to the next component and so on. These components of the pipeline are called **middleware**. In ASP.NET Core for middleware manipulation `Configure` method in `Startup.cs` class is used.<br>
+
+### Configuring the middleware
+
+To configure the middleware, methods of the object `IApplicationBuilder` that start with `Run`, `Map` and `Use` are used. Every component can be *inline* or have a separate class.<br>
+
+To create a middleware, `public delegate Task RequestDelegate(HttpContext context)` is used, which does some stuff and receives the context of the request.<br>
+
+**!IMPORTANT!** The order of the middleware matters!
+
+### In-built middleware components in ASP.NET Core
+
+- Authentication : support of authentication.
+- Cookie Policy : traces the agreement of the user on collecting his information in cookies.
+- CORS : support of crossdomen requests.
+- Diagnostics : everything for program debugging.
+- Forwarded Headers : redirects request headers.
+- Health Check : checks the status of asp.net app.
+- HTTP Method Override : lets incoming POST-requests to override method.
+- HTTPS Redirection : redirects all HTTP requests to HTTPS.
+- HTTP Strict Transport Security (HSTS) : for better privacy adds response header.
+- MVC : support of MVC design pattern.
+- Request Localization : support of localization.
+- Response Caching : lets response caching.
+- Response Compression : lets response compressing.
+- URL Rewrite : lets URL Rewriting.
+- Endpoint Routing : brings routing mechanism.
+- Session - support of sessions.
+- Static Files - support of static files proccessing.
+- WebSockets - support of WebSockets protocol.
