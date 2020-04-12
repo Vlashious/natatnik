@@ -225,3 +225,103 @@ public class Startup
 ```
 
 #### Map Method
+
+Used to correspond each request path with its own delegate to proccess.
+
+```c#
+public class Startup
+{
+    public void Configure(IApplicationBuilder app)
+    {
+        app.Map("/index", Index);
+        app.Map("/about", About);
+
+        app.Run(async (context) =>
+        {
+            await context.Response.WriteAsync("Page Not Found");
+        });
+    }
+
+    private static void Index(IApplicationBuilder app)
+    {
+        app.Run(async context =>
+        {
+            await context.Response.WriteAsync("Index");
+        });
+    }
+    private static void About(IApplicationBuilder app)
+    {
+        app.Run(async context =>
+        {
+            await context.Response.WriteAsync("About");
+        });
+    }
+}
+```
+
+Nested Map is supported.
+
+```c#
+public class Startup
+{
+    public void Configure(IApplicationBuilder app)
+    {
+        app.Map("/home", home =>
+        {
+            home.Map("/index", Index);
+            home.Map("/about", About);
+        });
+
+        app.Run(async (context) =>
+        {
+            await context.Response.WriteAsync("Page Not Found");
+        });
+    }
+
+    private static void Index(IApplicationBuilder app)
+    {
+        app.Run(async context =>
+        {
+            await context.Response.WriteAsync("Index");
+        });
+    }
+    private static void About(IApplicationBuilder app)
+    {
+        app.Run(async context =>
+        {
+            await context.Response.WriteAsync("About");
+        });
+    }
+}
+```
+
+##### MapWhen Method
+
+Acts like Map, but accepts `Func<HttpContext, bool>` delegate and proccesses a request only if this delegate is `true`.
+
+```c#
+public class Startup
+{
+    public void Configure(IApplicationBuilder app)
+    {
+        // If request has id key and its value is 5, invoke HandleId method.
+        app.MapWhen(context => {
+            return context.Request.Query.ContainsKey("id") &&
+                    context.Request.Query["id"] == "5";
+        }, HandleId);
+
+        app.Run(async (context) =>
+        {
+            await context.Response.WriteAsync("Good bye, World...");
+        });
+    }
+
+    private static void HandleId(IApplicationBuilder app)
+    {
+        app.Run(async context =>
+        {
+            await context.Response.WriteAsync("id is equal to 5");
+        });
+    }
+}
+```
