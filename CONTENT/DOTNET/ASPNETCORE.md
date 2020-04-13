@@ -467,3 +467,81 @@ public void Configure(IApplicationBuilder app)
 ```
 
 Notice how we don't need to pass IApplicationBuilder as a parameter when calling `UseCustomMiddleware()` method. It is done by ASP.NET Core.
+
+##### Example
+
+```c#
+public class AuthenticatingMiddleware
+{
+    private readonly RequestDelegate _next;
+    public AuthenticatingMiddleware(RequestDelegate next)
+    {
+        this._next = next;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        var token = context.Request.Query["token"];
+        if(string.IsNullOrWhiteSpace(token))
+        {
+            context.Response.StatusCode = 403;
+        }
+        else
+        {
+            await _next.Invoke(context);
+        }
+    }
+}
+
+public class AuthenticationMiddleware
+{
+    private RequestDelegate _next;
+    public AuthenticationMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+    public async Task InvokeAsync(HttpContext context)
+    {
+        var token = context.Request.Query["token"];
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            context.Response.StatusCode = 403;
+        }
+        else
+        {
+            await _next.Invoke(context);
+        }
+    }
+}
+
+public class ErrorHandlingMiddleware
+{
+    private RequestDelegate _next;
+    public ErrorHandlingMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+    public async Task InvokeAsync(HttpContext context)
+    {
+        await _next.Invoke(context);
+        if (context.Response.StatusCode == 403)
+        {
+            await context.Response.WriteAsync("Access Denied");
+        }
+        else if (context.Response.StatusCode == 404)
+        {
+            await context.Response.WriteAsync("Not Found");
+        }
+    }
+}
+
+public class Startup
+{
+    public void Configure(IApplicationBuilder app)
+    {
+        app.UseMiddleware<ErrorHandlingMiddleware>();
+        app.UseMiddleware<AuthenticationMiddleware>();
+        app.UseMiddleware<RoutingMiddleware>();
+    }
+}
+```
