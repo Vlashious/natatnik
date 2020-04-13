@@ -500,28 +500,6 @@ public class RoutingMiddleware
     }
 }
 
-public class AuthenticatingMiddleware
-{
-    private readonly RequestDelegate _next;
-    public AuthenticatingMiddleware(RequestDelegate next)
-    {
-        this._next = next;
-    }
-
-    public async Task InvokeAsync(HttpContext context)
-    {
-        var token = context.Request.Query["token"];
-        if(string.IsNullOrWhiteSpace(token))
-        {
-            context.Response.StatusCode = 403;
-        }
-        else
-        {
-            await _next.Invoke(context);
-        }
-    }
-}
-
 // Some form of the authenticating.
 public class AuthenticationMiddleware
 {
