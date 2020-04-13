@@ -601,3 +601,50 @@ if (env.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 ```
+
+## Static Files
+
+Static files should be placed in ContentRoot/WebRoot. Standart folder for WebRoot is `wwwroot`. To access static files, `app.UseStaticFiles()` middleware should be used.
+
+```c#
+public class Startup
+{
+    public void Configure(IApplicationBuilder app)
+    {
+        app.UseStaticFiles();   // Add support for static files.
+
+        // Runs only if there is no files in wwwroot folder to show.
+        // For example, if we have wwwroot/index.html file,
+        // when request comes and its url is /index.html,
+        // this file will be shown as a response and that's it.
+        // If there is no such file, output "Hello Babe" instead.
+        app.Run(async (context) =>
+        {
+            await context.Response.WriteAsync("Hello Babe");
+        });
+    }
+}
+```
+
+It is possible to override the default path for WebRoot. For example, if you wanted to use "static" folder instead of "wwwroot", use `webBuilder.UseWebRoot("static");`.
+Notice that this is a Program.cs file.
+
+```c#
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        CreateHostBuilder(args).Build().Run();
+    }
+
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+
+                //Override the default WebRoot to some custom.
+                webBuilder.UseWebRoot("static");
+            });
+}
+```
