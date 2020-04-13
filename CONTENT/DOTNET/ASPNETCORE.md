@@ -566,3 +566,38 @@ public class Startup
     }
 }
 ```
+
+## IHostingEnvironment
+
+Objects of this type are used for communication with the environment of the application. This interface offers several properties, which can be of help:
+
+- ApplicationName - name of the application.
+- EnvironmentName - returns description of the environment of the application.
+- ContentRootPath - returns root path of the application.
+- WebRootPath - returns path to a folder, where static content of the application is. Commonly, it is a `wwwroot` folder.
+- ContentRootFileProvider - returns an implementation of `Microsoft.AspNetCore.FileProviders.IFileProvider` interface, which can be used to read files in ContentRootPath.
+- WebRootFileProvider - returns an implementation of `Microsoft.AspNetCore.FileProviders.IFileProvider` interface, which can be used to read files in WebRootPath.
+
+These settings can be set in `launchSettings.json` file of the project.
+
+### IWebHostEnvironment
+
+Has some special methods like:
+
+- IsEnvironment(string envName) - returns true if the name of the environment equals `envName`. It means that you can have custom environment names, not only "Development", "Staging" or "Production".
+- IsDevelopment() - returns true if the name of the environment is "Development".
+- IsStaging() - returns true if the name of the environment is "Staging".
+- IsProduction() - returns true if the name of the environment is "Production".
+
+For example, this lines of code execute only if the application is in development proccess. It means that it won't be executed when the application is in production.
+
+```c#
+if (env.IsDevelopment())
+{
+    // Tells the application to show error pages
+    // with full error traceback. Can be EXTREMELY
+    // dangerous for confidentiality
+    // when this happens in the production.
+    app.UseDeveloperExceptionPage();
+}
+```
