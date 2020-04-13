@@ -471,6 +471,35 @@ Notice how we don't need to pass IApplicationBuilder as a parameter when calling
 ##### Example
 
 ```c#
+public class RoutingMiddleware
+{
+    private readonly RequestDelegate _next;
+    public RoutingMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        string path = context.Request.Path.Value.ToLower();
+        
+        // If request path is determined in the code, write a message.
+        // Else, set status code to 404 (not found).
+        if (path == "/index")
+        {
+            await context.Response.WriteAsync("Home Page");
+        }
+        else if (path == "/about")
+        {
+            await context.Response.WriteAsync("About");
+        }
+        else
+        {
+            context.Response.StatusCode = 404;
+        }
+    }
+}
+
 public class AuthenticatingMiddleware
 {
     private readonly RequestDelegate _next;
@@ -493,6 +522,7 @@ public class AuthenticatingMiddleware
     }
 }
 
+// Some form of the authenticating.
 public class AuthenticationMiddleware
 {
     private RequestDelegate _next;
@@ -503,6 +533,11 @@ public class AuthenticationMiddleware
     public async Task InvokeAsync(HttpContext context)
     {
         var token = context.Request.Query["token"];
+
+        // If token is not null or space,
+        // authenticating is successful and
+        // else is called to continue the pipeline.
+        // If token is null, set status code to 403 (access denied)
         if (string.IsNullOrWhiteSpace(token))
         {
             context.Response.StatusCode = 403;
@@ -514,6 +549,7 @@ public class AuthenticationMiddleware
     }
 }
 
+// Handle Errors in the pipeline proccess.
 public class ErrorHandlingMiddleware
 {
     private RequestDelegate _next;
@@ -523,11 +559,18 @@ public class ErrorHandlingMiddleware
     }
     public async Task InvokeAsync(HttpContext context)
     {
+        // Invoke the next method.
         await _next.Invoke(context);
+
+        // If after all of thhe methods ahead
+        // status code of the http response is 403,
+        // write Access Denied.
         if (context.Response.StatusCode == 403)
         {
             await context.Response.WriteAsync("Access Denied");
         }
+
+        // Else if status code is 404, write Not Found.
         else if (context.Response.StatusCode == 404)
         {
             await context.Response.WriteAsync("Not Found");
