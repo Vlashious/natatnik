@@ -325,3 +325,145 @@ public class Startup
     }
 }
 ```
+
+#### Custom Middleware
+
+There is a possibility to write custom middleware.
+
+```c#
+public class CustomMiddleware
+{
+    private readonly RequestDelegate _next;
+
+    // This constructer is called by the ASP.NET itself.
+    // RequestDelegate is the next middleware in the pipeline.
+    public TokenMiddleware(RequestDelegate next)
+    {
+        this._next = next;
+    }
+
+    // Can be InvokeAsync or Invoke.
+    public async Task InvokeAsync(HttpContext context)
+    {
+        var token = context.Request.Query["token"];
+
+        // If token key is 12345678? go to the next component of the pipeline.
+        // Else, send to request that token is invalid.
+        if (token!="12345678")
+        {
+            context.Response.StatusCode = 403;
+            await context.Response.WriteAsync("Token is invalid");
+        }
+        else
+        {
+            await _next.Invoke(context);
+        }
+    }
+}
+```
+
+To use a custom middleware, simply call a `UseMiddleware<T>();` of an IApplicationBuilder object.
+
+```c#
+public class Startup
+{
+    public void Configure(IApplicationBuilder app)
+    {
+        app.UseMiddleware<CustomMiddleware>();
+
+        app.Run(async (context) =>
+        {
+            await context.Response.WriteAsync("Hello World");
+        });
+    }
+}
+```
+
+There is a practice of helper classes usage. Instead of calling `UseMiddleware<T>()`, you can create a new class with the following content:
+
+```c#
+using Microsoft.AspNetCore.Builder;
+public static class MiddlewareExtensions
+{
+    public static IApplicationBuilder UseCustomMiddleWare(this IApplicationBuilder builder)
+    {
+        return builder.UseMiddleware<CustomMiddleware>();
+    }
+}
+```
+
+So now we can simply call `UseCustomMiddleware()` of object IApplicationBuilder, because we injected the standart IApplicationBuilder with our custom middleware.
+
+```c#
+public class Startup
+{
+    public void Configure(IApplicationBuilder app)
+    {
+        //app.UseMiddleware<CustomMiddleware>();
+        app.UseCustomMiddleware();
+
+        app.Run(async (context) =>
+        {
+            await context.Response.WriteAsync("Hello World");
+        });
+    }
+}
+```
+
+Also we can pass parameters to custom middleware.
+
+```c#
+//  CustomMiddleware.cs
+public class CustomMiddleware
+{
+    private readonly RequestDelegate _next;
+    private string _pattern;
+
+    public TokenMiddleware(RequestDelegate next, string pattern)
+    {
+        this._next = next;
+        this._pattern = pattern;
+    }
+
+    // Can be InvokeAsync or Invoke.
+    public async Task InvokeAsync(HttpContext context)
+    {
+        var token = context.Request.Query["token"];
+
+        // If token key is 12345678? go to the next component of the pipeline.
+        // Else, send to request that token is invalid.
+        if (token != pattern)
+        {
+            context.Response.StatusCode = 403;
+            await context.Response.WriteAsync("Token is invalid");
+        }
+        else
+        {
+            await _next.Invoke(context);
+        }
+    }
+}
+
+// MiddlewareExtensions.cs
+using Microsoft.AspNetCore.Builder;
+public static class MiddlewareExtensions
+{
+    public static IApplicationBuilder UseCustomMiddleWare(this IApplicationBuilder builder, string pattern)
+    {
+        return builder.UseMiddleware<CustomMiddleware>(pattern);
+    }
+}
+
+// Configure Method
+public void Configure(IApplicationBuilder app)
+{
+    app.UseCustomMiddleware("555555");
+
+    app.Run(async (context) =>
+    {
+        await context.Response.WriteAsync("Hello World");
+    });
+}
+```
+
+Notice how we don't need to pass IApplicationBuilder as a parameter when calling `UseCustomMiddleware()` method. It is done by ASP.NET Core.
