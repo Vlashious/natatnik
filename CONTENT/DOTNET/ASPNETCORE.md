@@ -755,3 +755,39 @@ app.Map("/error", ap => ap.Run(async context =>
 `UseStatusCodePages("text/plain", "Error. Status Code : {0});` tells the browser the MIME-type of the response and the message itself.<br>
 `UseStatusCodePagesWithRedirects("/error?code={0});` redirects the user. Should not be used.<br>
 `UseStatusCodePagesWithReExecute("/error", "?code={0});` not only redirects the user, but also sets the parameters of the request string. This should be used instead of the `UseStatusCodeWithRedirects()` method.
+
+## HTTPS
+
+`app.UseHttpsRedirection();` redirects the user to the HTTPS protocol.<br>
+
+In `Program.cs`, we can set parameters to this middleware.
+
+```c#
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddHttpsRedirection(options =>
+    {
+        options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect; // Status code of the redirection.
+        options.HttpsPort = 80800; //  Sets the port for HTTPS connection.
+    })
+}
+```
+
+### HSTS
+
+Http Strict Transport Protocol - tells the browser to use HTTPS instead of HTTP. It is NOT a redirection.<br>
+
+`app.UseHsts();`
+
+In `Program.cs`, we can set parameters to this middleware.
+
+```c#
+services.AddHsts(options =>
+{
+    options.Preload = true; // Says to use preloaded list of domens which are safe to use.
+    options.IncludeSubDomains = true; // Action is set to all of the subdomains.
+    options.MaxAge = TimeSpan.FromDays(60); // Max duration of the header.
+    options.ExcludeHosts.Add("us.example.com"); // Needs no explanation.
+    options.ExlcudeHosts.Add("www.example.com");
+});
+```
