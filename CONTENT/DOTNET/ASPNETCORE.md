@@ -674,3 +674,54 @@ app.UseDefaultFiles(options); // If there is a request to the root, search for h
 
 app.UseStaticFiles();
 ```
+
+### UseDirectoryBrowser method
+
+Lets users to browse server catalogue directly on the site then they go to the root "/".
+
+```c#
+app.UseDirectoryBrowser();
+```
+
+Also this method can be overrided. You can combine some request path with physical path on the server side.
+
+```c#
+app.UseDirectoryBrowser(new DidrectoryBrowserOptions()
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot/html")),
+    RequestPath = new PathString("/pages")
+});
+```
+
+This example shows whenever user tries to connect to "/pages", he can browse what's inside of "wwwroot/html" folder.
+
+### UseStaticFiles overload
+
+```c#
+app.UseStaticFiles(); // Handles all the static files in the "wwwroot/" folder.
+app.UseStaticFiles(new StaticFilesOptions() // Handles all the static files in the "wwroot/html/" folder.
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwroot/html")),
+    RequestPath = new PathString("/pages")
+});
+```
+
+### UseFileServer method
+
+Unites the functionality of `UseStatickFiles()`, `UseDefaultFiles()` and `UseDirectoryBrowser()`.
+
+```c#
+app.UseFileServer();
+
+ // Enables UseDirectoryBrowser() middleware.
+app.UseFileServer(enableDirectoryBrowsing: true);
+
+// Full control over this method.
+app.UseFileServer(new FileServerOptions()
+{
+    EnableDirectoryBrowsing = true,
+    FileProvider = new PhysicalFileProvider(Path.Combine(DIrectory.GetCurrentPath(), "wwwroot")),
+    RequestPath = new PathString("/pages"),
+    EnableDefaultFiles = true
+});
+```
