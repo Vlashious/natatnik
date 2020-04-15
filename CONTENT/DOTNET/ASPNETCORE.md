@@ -725,3 +725,33 @@ app.UseFileServer(new FileServerOptions()
     EnableDefaultFiles = true
 });
 ```
+
+## Error Handling
+
+### UseDeveloperExceptionPage()
+
+Middleware for detailed information about happened errors. Should not be seen in Production stage of the app.
+
+```c#
+app.UseDeveloperExceptionPage();
+```
+
+### UseExceptionHandler()
+
+Redirects the user to some determined page if any error happens.
+
+```c#
+app.UseExceptionHandler("/error"); // Tells the app to redirect to /error when error happens.
+
+app.Map("/error", ap => ap.Run(async context =>
+{
+    awat context.Response.WriteAsync("Exception!");
+}))
+```
+
+### HTTP Errors handling
+
+`UseStatusCodePages();` middleware will sent the bowser the status code of the request. This method can be overloaded.<br>
+`UseStatusCodePages("text/plain", "Error. Status Code : {0});` tells the browser the MIME-type of the response and the message itself.<br>
+`UseStatusCodePagesWithRedirects("/error?code={0});` redirects the user. Should not be used.<br>
+`UseStatusCodePagesWithReExecute("/error", "?code={0});` not only redirects the user, but also sets the parameters of the request string. This should be used instead of the `UseStatusCodeWithRedirects()` method.
