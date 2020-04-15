@@ -419,7 +419,7 @@ public class CustomMiddleware
     private readonly RequestDelegate _next;
     private string _pattern;
 
-    public TokenMiddleware(RequestDelegate next, string pattern)
+    public CustomMiddleware(RequestDelegate next, string pattern)
     {
         this._next = next;
         this._pattern = pattern;
@@ -482,7 +482,7 @@ public class RoutingMiddleware
     public async Task InvokeAsync(HttpContext context)
     {
         string path = context.Request.Path.Value.ToLower();
-        
+
         // If request path is determined in the code, write a message.
         // Else, set status code to 404 (not found).
         if (path == "/index")
@@ -589,7 +589,7 @@ Has some special methods like:
 - IsStaging() - returns true if the name of the environment is "Staging".
 - IsProduction() - returns true if the name of the environment is "Production".
 
-For example, this lines of code execute only if the application is in development proccess. It means that it won't be executed when the application is in production.
+For example, these lines of code execute only if the application is in development proccess. It means that it won't be executed when the application is in production.
 
 ```c#
 if (env.IsDevelopment())
@@ -647,4 +647,30 @@ public class Program
                 webBuilder.UseWebRoot("static");
             });
 }
+```
+
+### Working with static files
+
+```c#
+app.UseDefaultFiles();
+app.UseStaticFiles();
+// The correct order of the pipeline.
+```
+
+`app.UseDefaultFiles()` sets some default files to send as a response without actually proccessing them. For example, if someone requests root of the web application, the app will send them these files in `wwwroot` folder:
+
+- index.htm
+- index.html
+- default.htm
+- default.html
+
+If file exists, it is sent as a response. Else, the proccessing goes on in the middleware pipeline. It is possible to override the names of the default files.
+
+```c#
+DefaultFilesOptions options = new DefaultFilesOptions() // Creates options with 4 default names.
+options.DefaultFileNames.Clear(); // Clears the list of the default file names.
+options.DefaultFileNames.Add("hello.html"); // Add custom default name to the options.
+app.UseDefaultFiles(options); // If there is a request to the root, search for hello.html file.
+
+app.UseStaticFiles();
 ```
