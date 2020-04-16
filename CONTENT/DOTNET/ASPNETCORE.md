@@ -896,3 +896,65 @@ public ConfigureServices(IServiceCollection services)
     services.AddTimeService();
 }
 ```
+
+### How to get services within the application
+
+In ASP.NET Core we can receive added services by these methods:
+
+- In a class constructor (except Startup.cs).
+- As a method parameter in `Configure` method in Startup.cs.
+- As a method parameter in `Invoke` method of any middleware.
+- Through `RequestServices` property of `HttpContext` in middleware components (service locator).
+- Through `ApplicationServices` property of `IApplicationBuilder` object.
+
+The best way to go is a class constructor.
+
+```c#
+// Declare the interface for service.
+public interface IMessageSender
+{
+    string Send();
+}
+
+// Implement the interface.
+public class EmailMessageSender : IMessageSender
+{
+    public string Send()
+    {
+        return "Email send";
+    }
+}
+
+// Make a Message Service, which accepts one implementation of
+// IMessageSender.
+public class MessageService
+{
+    IMessageSender _sender;
+    public MessageService(IMessageSender sender)
+    {
+        _sender = sender;
+    }
+    public string Send()
+    {
+        return _sender.Send();
+    }
+}
+
+...
+
+// Startup.cs
+
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddTransient<IMessageSender, EmailMessageSender>(); // Tell IMessageSender EmailMessageSender is its implementation.
+    services.AddTransient<MessageService>(); // Add MessageService, which will be EmailMessageSender.
+}
+
+public void Configure(IApplicationBuilder app, MessageService messageService)
+{
+    app.Run(async context =>
+    {
+        await context.Response.WriteAsync(messageService.Send());
+    })
+}
+```
