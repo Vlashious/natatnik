@@ -791,3 +791,108 @@ services.AddHsts(options =>
     options.ExlcudeHosts.Add("www.example.com");
 });
 ```
+
+## Dependency Injection
+
+Is a mechanism, which lets objects, which interact with eacth other, be weakly connected. These objects are connected by abstracts like `interface`, that makes the system more flexible and adapting.
+
+### ConfigureServices method
+
+In `Startup.cs`, `ConfigureServices` method is defined to set any services for application needs. To add a service, use `services.Add[ServiceName]` method. For example:
+
+```c#
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddMvc(); // Adds services for MVC support, which can be used in Configure method of the
+                       // Startup.cs class.
+}
+```
+
+### Information about services
+
+Every service in the `IServiceCollection` is a `ServiceDescriptor` object, which helds some information. THe most important are:
+
+- ServiceType - type of the service.
+- ImplementationType - implementation type of the service.
+- Lifetime - lifetime of the service.
+
+### Creating custom services
+
+```c#
+public interface IMessageSender
+{
+    string Send();
+}
+
+public class EmailMessageSender : IMessageSender
+{
+    public string Send()
+    {
+        return "Sent by Email";
+    }
+}
+
+public class SmsMessageSender : IMessageSender
+{
+    public string Send()
+    {
+        return "Send by SMS";
+    }
+}
+
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddTransient<IMessageSender, EmailMessageSender>(); // Tells to use EmailMessageSender implementation of IMessageSender.
+    }
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env, IMessageSender messageSender)
+    {
+        app.Run(async context =>
+        {
+            await context.Response.WriteAsync(messageSender.Send()); // Outputs "Sent by Email".
+        })
+    }
+}
+```
+
+But it is not a neccessity to divide interface and its implementation. A service is **ANYTHING** that is used by the app.
+
+```c#
+public class TimeService
+{
+    public string GetTime() => System.DateTime.Now.ToString("hh:mm:ss");
+}
+
+...
+
+public void Configure(IServiceCollection services)
+{
+    services.AddTransient<TimeService>();
+}
+
+public void Configure(IApplicationBuilder app, TimeService service)
+{
+    // Now you can use functionality from the TimeService class.
+    // But this time its reffered to as service.
+}
+```
+
+It is also possible to add on to service collection.
+
+```c#
+public static class ServiceProviderExtensions
+{
+    public static void AddTimeService(this IServiceCollection services)
+    {
+        services.AddTransient<TimeService>();
+    }
+}
+
+...
+
+public ConfigureServices(IServiceCollection services)
+{
+    services.AddTimeService();
+}
+```
