@@ -958,3 +958,13 @@ public void Configure(IApplicationBuilder app, MessageService messageService)
     })
 }
 ```
+
+### Lifetime of the dependencies
+
+Services which are created by Dependency Injection can be of types:
+
+- Transient : whenever the service is being addressed, new object of this service is created. In one request there can be multiple addresses to the service, so each time new object is created.
+- Scoped : for every request new object of the service is created. If there is multiple addresses to the service, these addresses will be working with one instance of the service.
+- Singleton : object of the service is created when addressed and lasts while app is working.
+
+To create each type of service, use `AddTransient()`, `AddScoped()`, `AddSingleton()`.
