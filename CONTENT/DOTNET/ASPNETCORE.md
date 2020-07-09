@@ -968,3 +968,13 @@ Services which are created by Dependency Injection can be of types:
 - Singleton : object of the service is created when addressed and lasts while app is working.
 
 To create each type of service, use `AddTransient()`, `AddScoped()`, `AddSingleton()`.
+
+### Working with Databases
+
+To work with databases, in `Startup.cs` go to `ConfigureServices()` and add this line:
+
+`services.AddDbContext<>(options => ...)`
+
+In `options` you can specify which database type exactly do you want.
+
+!IMPORTANT! This is using Entity Framework.
