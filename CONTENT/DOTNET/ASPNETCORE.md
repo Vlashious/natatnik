@@ -978,3 +978,35 @@ To work with databases, in `Startup.cs` go to `ConfigureServices()` and add this
 In `options` you can specify which database type exactly do you want.
 
 !IMPORTANT! This is using Entity Framework.
+
+## Shared
+
+In ASPNET Core stack, you can add shared fragments across all of the views. Depending on type of the web app (MVC, Razor Pages, Blazor), this can be achieved in different ways.
+
+### MVC
+
+In `Views` folder, `Shared` folder can be found (or created). `_Layout.cshtml` can be located here (or created). This file stands for shared layout across all of the pages. It has `@RenderBody()` directive, which means that all of the children must be rendered here. But to share it, `_ViewStart.cshtml` file is introduced.
+
+`_ViewStart.cshtml` is included if the `Views` folder by default. This file stands for sharing same lines of code across all of the Views. If we investigate this file, there is the following:
+
+```c#
+@{
+    Layout = "_Layout";
+}
+```
+
+This means _use _Layout.cshtml as a default layout page for all of the Views files_.
+
+### Razor Pages
+
+Everything the same as for MVC web app. But `_Layout.cshtml` can be placed in `Pages` folder or `Pages/Shared`.
+
+### Blazor
+
+Since Blazor differs from MVC and Razor Pages, these are the files that share everything across all of the Blazor components:
+
+- `_Imports.razor` - for `@using` directive to share across all of the components.
+- `App.razor` - sprecifies the default layout of the application.
+- `Shared` folder - there can be added different layout files for the app to use.
+
+In order to apply the layout sprecifically to the component, `@layout` directive is used.
