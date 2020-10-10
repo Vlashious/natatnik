@@ -5,6 +5,7 @@
 - [Properties](Properties.md)
 - [Delegates, Actions, Events, Func](Delegates.md)
 - [LINQ](LINQ.md)
+- [async / await](AsyncAwait.md)
 
 ## Namespaces
 Allow you to develope code without interfering with the code already exists. It's always a good practice to use a namespace.
