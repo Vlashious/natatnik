@@ -54,3 +54,75 @@ Task task3 = Task.FromResult(7);
 int[] results = await Task.WhenAll(task1, task2, task3);
 // "results" contains { 3, 5, 7 }
 ```
+
+## Task.WhenAny
+This method takes a sequence of tasks and returns a task that completes when any of the tasks complete. The result of the returned task is the task that completed.
+```c#
+// Returns the length of data at the first URL to respond.
+private static async Task<int> FirstRespondingUrlAsync(string urlA, string urlB)
+{
+    var httpClient = new HttpClient();
+    // Start both downloads concurrently.
+    Task<byte[]> downloadTaskA = httpClient.GetByteArrayAsync(urlA);
+    Task<byte[]> downloadTaskB = httpClient.GetByteArrayAsync(urlB);
+    // Wait for either of the tasks to complete.
+    Task<byte[]> completedTask =
+    await Task.WhenAny(downloadTaskA, downloadTaskB);
+    // Return the length of the data retrieved from that URL.
+    byte[] data = await completedTask;
+    return data.Length;
+}
+```
+You have a collection of tasks to await, and you want to do some processing on each task after it completes. However, you want to do the processing for each one as soon as it completes, not waiting for any of the other tasks.
+```c#
+static async Task<int> DelayAndReturnAsync(int val)
+{
+    await Task.Delay(TimeSpan.FromSeconds(val));
+    return val;
+}
+// Currently, this method prints "2", "3", and "1".
+// We want this method to print "1", "2", and "3".
+static async Task ProcessTasksAsync()
+{
+    // Create a sequence of tasks.
+    Task<int> taskA = DelayAndReturnAsync(2);
+    Task<int> taskB = DelayAndReturnAsync(3);
+    Task<int> taskC = DelayAndReturnAsync(1);
+    var tasks = new[] { taskA, taskB, taskC };
+    // Await each task in order.
+    foreach (var task in tasks)
+    {
+        var result = await task;
+        Trace.WriteLine(result);
+    }
+}
+
+// After refactoring.
+static async Task<int> DelayAndReturnAsync(int val)
+{
+    await Task.Delay(TimeSpan.FromSeconds(val));
+    return val;
+}
+
+static async Task AwaitAndProcessAsync(Task<int> task)
+{
+    var result = await task;
+    Trace.WriteLine(result);
+}
+// This method now prints "1", "2", and "3".
+static async Task ProcessTasksAsync()
+{
+    // Create a sequence of tasks.
+    Task<int> taskA = DelayAndReturnAsync(2);
+    Task<int> taskB = DelayAndReturnAsync(3);
+    Task<int> taskC = DelayAndReturnAsync(1);
+    var tasks = new[] { taskA, taskB, taskC };
+    var processingTasks = tasks.Select(async t =>
+    {
+        var result = await t;
+        Trace.WriteLine(result);
+    }).ToArray();
+    // Await all processing to complete
+    await Task.WhenAll(processingTasks);
+}
+```
