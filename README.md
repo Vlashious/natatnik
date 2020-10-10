@@ -9,15 +9,12 @@
 ## Programming languages
 
 - C++
-- [C#](CONTENT/POGRAMMING%20LANGUAGES/C%20SHARP.md)
-- Java
+- [C#](CONTENT/PROGRAMMING%20LANGUAGES/CSHARP/MAIN.md)
 - Python
 
 ## Design Patterns
 
-- [Singleton](CONTENT/DESIGN%20PATTERNS/SINGLETON.md)
-- [Object Pooling](CONTENT/DESIGN%20PATTERNS/OBJECT%20POOLING.md)
-- [Command Pattern](CONTENT/DESIGN%20PATTERNS/COMMAND%20PATTERN.md)
+Can be found [here](https://github.com/Vlashious/DesignPatterns).
 
 ## .NET Platform
 
